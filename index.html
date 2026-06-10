@@ -1,91 +1,151 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TRM Colombia</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin TRM – El Espectador</title>
 <style>
-:root{--rojo:#c8102e;--negro:#111;--fondo:#f5f3ef;}
-body{margin:0;background:var(--fondo);font-family:Arial,sans-serif}
-.hero{background:#111;color:#fff;padding:35px 20px;border-bottom:4px solid var(--rojo)}
-.container{max-width:1100px;margin:auto;padding:20px}
-.trm{font-size:3rem;color:#c8102e;font-weight:bold}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin:20px 0}
-.card,.calc{background:#fff;padding:16px;border-radius:4px}
-.tabs button{padding:10px 15px;border:none;margin-right:5px;cursor:pointer}
-canvas{background:#fff;padding:10px;border-radius:4px}
-input{width:100%;padding:10px;margin:8px 0}
-button.action{background:#c8102e;color:#fff;border:none;padding:10px 15px;cursor:pointer}
-.result{font-weight:bold;margin-top:8px}
-</style></head><body>
-<div class="hero"><div class="container">
-<h1>TRM del dólar en Colombia</h1>
-<div class="trm" id="actual"></div>
-<p>Fuente: Superintendencia Financiera de Colombia</p>
-</div></div>
+:root {
+  --rojo: #c8102e;
+  --rojo-dark: #a50d25;
+  --fondo: #f5f3ef;
+  --blanco: #ffffff;
+  --texto: #111111;
+  --texto-muted: #666666;
+  --borde: #e0ddd6;
+  --verde: #1d9e75;
+  --radio: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--fondo); font-family: Arial, sans-serif; color: var(--texto); font-size: 15px; }
+
+.topbar { background: #111; color: #fff; padding: 20px 24px; border-bottom: 4px solid var(--rojo); display: flex; align-items: center; gap: 16px; }
+.topbar h1 { font-size: 20px; font-weight: bold; }
+.topbar span { font-size: 13px; color: #aaa; }
+.badge-admin { background: var(--rojo); color: #fff; font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: bold; letter-spacing: 0.04em; }
+
+.container { max-width: 860px; margin: 32px auto; padding: 0 20px 60px; }
+
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+.metric { background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); padding: 14px 16px; }
+.metric-label { font-size: 12px; color: var(--texto-muted); margin-bottom: 4px; }
+.metric-val { font-size: 22px; font-weight: bold; }
+
+.card { background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); padding: 20px; margin-bottom: 20px; }
+.card-title { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: var(--texto-muted); margin-bottom: 14px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-size: 12px; color: var(--texto-muted); font-weight: bold; }
+input[type="date"], input[type="number"] {
+  border: 1px solid var(--borde); border-radius: var(--radio);
+  padding: 9px 12px; font-size: 14px; color: var(--texto); background: #fff; width: 100%;
+  outline: none;
+}
+input:focus { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,16,46,0.1); }
+
+.btn { border: none; border-radius: var(--radio); padding: 10px 18px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.15s; }
+.btn-primary { background: var(--rojo); color: #fff; }
+.btn-primary:hover { background: var(--rojo-dark); }
+.btn-secondary { background: #111; color: #fff; }
+.btn-secondary:hover { background: #333; }
+.btn-outline { background: #fff; color: var(--texto); border: 1px solid var(--borde); }
+.btn-outline:hover { background: var(--fondo); }
+
+.alert { font-size: 13px; color: var(--rojo); margin-top: 8px; min-height: 18px; }
+
+.entry-list { max-height: 280px; overflow-y: auto; }
+.entry-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--borde); font-size: 13px; }
+.entry-row:last-child { border-bottom: none; }
+.entry-date { color: var(--texto-muted); min-width: 110px; }
+.entry-val { font-weight: bold; }
+.badge-new { background: #fce8eb; color: var(--rojo); font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: bold; margin-left: 8px; }
+.btn-del { background: none; border: none; cursor: pointer; color: #ccc; font-size: 16px; padding: 2px 6px; border-radius: 4px; transition: color 0.1s; }
+.btn-del:hover { color: var(--rojo); }
+
+.code-wrap { position: relative; }
+.code-block {
+  background: #1a1a1a; color: #e8e8e8; font-family: 'Courier New', monospace;
+  font-size: 12px; padding: 14px; border-radius: var(--radio);
+  max-height: 180px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+  margin-bottom: 12px; line-height: 1.6;
+}
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.steps { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.step { display: flex; gap: 12px; font-size: 13px; color: var(--texto-muted); align-items: flex-start; }
+.step-num { background: var(--rojo); color: #fff; border-radius: 50%; width: 22px; height: 22px; min-width: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-top: 1px; }
+.step code { background: #f0ede7; padding: 1px 6px; border-radius: 3px; font-size: 12px; color: #333; }
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #111; color: #fff; padding: 10px 22px; border-radius: 30px;
+  font-size: 13px; font-weight: bold; display: none; z-index: 999;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr 1fr; }
+  .form-row .btn { grid-column: 1 / -1; }
+  .summary { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>TRM Colombia — Panel de administración</h1>
+  <span class="badge-admin">Admin</span>
+  <span style="margin-left:auto;font-size:12px;" id="topFecha"></span>
+</div>
 
 <div class="container">
-<div class="cards">
-<div class="card"><h4>Variación anual</h4><div id="anual"></div></div>
-<div class="card"><h4>Máximo 12 meses</h4><div id="max"></div></div>
-<div class="card"><h4>Mínimo 12 meses</h4><div id="min"></div></div>
-<div class="card"><h4>Registros</h4><div>237</div></div>
+
+  <div class="summary" id="summaryGrid"></div>
+
+  <div class="card">
+    <p class="card-title">Agregar nueva TRM</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fechaInput">Fecha</label>
+        <input type="date" id="fechaInput" />
+      </div>
+      <div class="form-group">
+        <label for="valorInput">Valor en COP</label>
+        <input type="number" id="valorInput" placeholder="ej: 4200.50" step="0.01" />
+      </div>
+      <button class="btn btn-primary" onclick="agregarTRM()">+ Agregar</button>
+    </div>
+    <div class="alert" id="alertMsg"></div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Registros recientes (últimos 20)</p>
+    <div class="entry-list" id="entryList"></div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Código actualizado — listo para pegar en GitHub</p>
+    <div class="code-wrap">
+      <div class="code-block" id="codeBlock"></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="copiarCodigo()">📋 Copiar código</button>
+      <a class="btn btn-secondary" href="https://github.com/diegoojedanicolas-commits/dolar-TRM-El-Espectador/edit/main/index.html" target="_blank">✏️ Abrir en GitHub</a>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><span>Copia el código con el botón de arriba.</span></div>
+      <div class="step"><div class="step-num">2</div><span>En GitHub, edita <code>index.html</code> (botón "Abrir en GitHub").</span></div>
+      <div class="step"><div class="step-num">3</div><span>Busca <code>const trmData=[</code> y selecciona toda esa línea. Reemplázala con el código copiado.</span></div>
+      <div class="step"><div class="step-num">4</div><span>Haz clic en <strong>Commit changes</strong>. El sitio se actualiza en ~30 segundos.</span></div>
+    </div>
+  </div>
+
 </div>
 
-<div class="tabs">
-<button onclick="setRange(7)">7 días</button>
-<button onclick="setRange(30)">30 días</button>
-<button onclick="setRange(365)">12 meses</button>
-</div>
-
-<canvas id="chart"></canvas>
-
-<div class="cards" style="margin-top:20px">
-<div class="calc">
-<h3>USD → COP</h3>
-<input id="usd" type="number" placeholder="Ingrese dólares">
-<button class="action" onclick="usdToCop()">Calcular</button>
-<div id="usdResult" class="result"></div>
-</div>
-
-<div class="calc">
-<h3>COP → USD</h3>
-<input id="cop" type="number" placeholder="Ingrese pesos colombianos">
-<button class="action" onclick="copToUsd()">Calcular</button>
-<div id="copResult" class="result"></div>
-</div>
-</div>
-
-<p><b>Actualización manual:</b> agregue una nueva línea dentro del arreglo <code>trmData</code>.</p>
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
-const trmData=[{"fecha": "2025-06-06", "valor": 4097.66}, {"fecha": "2025-06-07", "valor": 4138.72}, {"fecha": "2025-06-10", "valor": 4138.53}, {"fecha": "2025-06-11", "valor": 4190.9}, {"fecha": "2025-06-12", "valor": 4190.61}, {"fecha": "2025-06-13", "valor": 4169.13}, {"fecha": "2025-06-14", "valor": 4147.34}, {"fecha": "2025-06-17", "valor": 4096.44}, {"fecha": "2025-06-18", "valor": 4098.83}, {"fecha": "2025-06-19", "valor": 4076.32}, {"fecha": "2025-06-21", "valor": 4080.06}, {"fecha": "2025-06-25", "valor": 4081.15}, {"fecha": "2025-06-26", "valor": 4067.64}, {"fecha": "2025-06-27", "valor": 4042.87}, {"fecha": "2025-06-28", "valor": 4069.67}, {"fecha": "2025-07-02", "valor": 4047.71}, {"fecha": "2025-07-03", "valor": 4006.46}, {"fecha": "2025-07-04", "valor": 3974.37}, {"fecha": "2025-07-08", "valor": 4022.29}, {"fecha": "2025-07-09", "valor": 4054.13}, {"fecha": "2025-07-10", "valor": 4026.09}, {"fecha": "2025-07-11", "valor": 4013.5}, {"fecha": "2025-07-12", "valor": 4003.9}, {"fecha": "2025-07-15", "valor": 4011.79}, {"fecha": "2025-07-16", "valor": 4015.04}, {"fecha": "2025-07-17", "valor": 4031.86}, {"fecha": "2025-07-18", "valor": 4016.44}, {"fecha": "2025-07-19", "valor": 4000.61}, {"fecha": "2025-07-22", "valor": 4026.27}, {"fecha": "2025-07-23", "valor": 4061.36}, {"fecha": "2025-07-24", "valor": 4052.86}, {"fecha": "2025-07-25", "valor": 4063.31}, {"fecha": "2025-07-26", "valor": 4110.48}, {"fecha": "2025-07-29", "valor": 4170.59}, {"fecha": "2025-07-30", "valor": 4154.79}, {"fecha": "2025-07-31", "valor": 4179.69}, {"fecha": "2025-08-01", "valor": 4186.71}, {"fecha": "2025-08-02", "valor": 4129.42}, {"fecha": "2025-08-05", "valor": 4097.38}, {"fecha": "2025-08-06", "valor": 4093.12}, {"fecha": "2025-08-07", "valor": 4049.35}, {"fecha": "2025-08-09", "valor": 4034.74}, {"fecha": "2025-08-12", "valor": 4045.87}, {"fecha": "2025-08-13", "valor": 4017.12}, {"fecha": "2025-08-14", "valor": 4020.64}, {"fecha": "2025-08-15", "valor": 4048.74}, {"fecha": "2025-08-16", "valor": 4019.24}, {"fecha": "2025-08-20", "valor": 4036.42}, {"fecha": "2025-08-21", "valor": 4025.51}, {"fecha": "2025-08-22", "valor": 4034.18}, {"fecha": "2025-08-23", "valor": 4008.7}, {"fecha": "2025-08-26", "valor": 4017.44}, {"fecha": "2025-08-27", "valor": 4044.51}, {"fecha": "2025-08-28", "valor": 4051.97}, {"fecha": "2025-08-29", "valor": 4019.09}, {"fecha": "2025-08-30", "valor": 4018.41}, {"fecha": "2025-09-03", "valor": 4016.94}, {"fecha": "2025-09-04", "valor": 4002.86}, {"fecha": "2025-09-05", "valor": 3991.09}, {"fecha": "2025-09-06", "valor": 3960.94}, {"fecha": "2025-09-09", "valor": 3945.29}, {"fecha": "2025-09-10", "valor": 3919.13}, {"fecha": "2025-09-11", "valor": 3921.58}, {"fecha": "2025-09-12", "valor": 3903.18}, {"fecha": "2025-09-13", "valor": 3906.24}, {"fecha": "2025-09-16", "valor": 3897.57}, {"fecha": "2025-09-17", "valor": 3881.92}, {"fecha": "2025-09-18", "valor": 3880.01}, {"fecha": "2025-09-19", "valor": 3892.45}, {"fecha": "2025-09-20", "valor": 3891.19}, {"fecha": "2025-09-23", "valor": 3852.16}, {"fecha": "2025-09-24", "valor": 3844.47}, {"fecha": "2025-09-25", "valor": 3881.26}, {"fecha": "2025-09-26", "valor": 3898.87}, {"fecha": "2025-09-27", "valor": 3908.12}, {"fecha": "2025-09-30", "valor": 3901.29}, {"fecha": "2025-10-01", "valor": 3923.55}, {"fecha": "2025-10-02", "valor": 3890.0}, {"fecha": "2025-10-03", "valor": 3897.64}, {"fecha": "2025-10-04", "valor": 3874.18}, {"fecha": "2025-10-07", "valor": 3853.19}, {"fecha": "2025-10-08", "valor": 3867.54}, {"fecha": "2025-10-09", "valor": 3879.8}, {"fecha": "2025-10-10", "valor": 3894.99}, {"fecha": "2025-10-11", "valor": 3913.24}, {"fecha": "2025-10-15", "valor": 3933.31}, {"fecha": "2025-10-16", "valor": 3902.16}, {"fecha": "2025-10-17", "valor": 3877.07}, {"fecha": "2025-10-18", "valor": 3808.12}, {"fecha": "2025-10-21", "valor": 3877.26}, {"fecha": "2025-10-22", "valor": 3876.6}, {"fecha": "2025-10-23", "valor": 3900.82}, {"fecha": "2025-10-24", "valor": 3888.76}, {"fecha": "2025-10-25", "valor": 3858.63}, {"fecha": "2025-10-28", "valor": 3844.2}, {"fecha": "2025-10-29", "valor": 3874.84}, {"fecha": "2025-10-30", "valor": 3885.29}, {"fecha": "2025-10-31", "valor": 3870.42}, {"fecha": "2025-11-01", "valor": 3860.12}, {"fecha": "2025-11-05", "valor": 3872.47}, {"fecha": "2025-11-06", "valor": 3839.47}, {"fecha": "2025-11-07", "valor": 3807.06}, {"fecha": "2025-11-08", "valor": 3779.2}, {"fecha": "2025-11-11", "valor": 3760.93}, {"fecha": "2025-11-13", "valor": 3719.71}, {"fecha": "2025-11-14", "valor": 3719.6}, {"fecha": "2025-11-15", "valor": 3764.77}, {"fecha": "2025-11-19", "valor": 3737.55}, {"fecha": "2025-11-20", "valor": 3716.73}, {"fecha": "2025-11-21", "valor": 3741.27}, {"fecha": "2025-11-22", "valor": 3808.77}, {"fecha": "2025-11-25", "valor": 3804.09}, {"fecha": "2025-11-26", "valor": 3806.16}, {"fecha": "2025-11-27", "valor": 3773.6}, {"fecha": "2025-11-29", "valor": 3744.43}, {"fecha": "2025-12-02", "valor": 3784.43}, {"fecha": "2025-12-03", "valor": 3817.66}, {"fecha": "2025-12-04", "valor": 3780.8}, {"fecha": "2025-12-05", "valor": 3757.92}, {"fecha": "2025-12-06", "valor": 3830.02}, {"fecha": "2025-12-10", "valor": 3861.34}, {"fecha": "2025-12-11", "valor": 3854.28}, {"fecha": "2025-12-12", "valor": 3810.99}, {"fecha": "2025-12-13", "valor": 3788.53}, {"fecha": "2025-12-16", "valor": 3817.59}, {"fecha": "2025-12-17", "valor": 3847.1}, {"fecha": "2025-12-18", "valor": 3866.77}, {"fecha": "2025-12-19", "valor": 3874.71}, {"fecha": "2025-12-20", "valor": 3817.93}, {"fecha": "2025-12-23", "valor": 3792.59}, {"fecha": "2025-12-24", "valor": 3759.48}, {"fecha": "2025-12-25", "valor": 3706.94}, {"fecha": "2025-12-27", "valor": 3716.05}, {"fecha": "2025-12-30", "valor": 3706.97}, {"fecha": "2025-12-31", "valor": 3757.08}, {"fecha": "2026-01-03", "valor": 3790.77}, {"fecha": "2026-01-06", "valor": 3770.03}, {"fecha": "2026-01-07", "valor": 3730.26}, {"fecha": "2026-01-08", "valor": 3748.83}, {"fecha": "2026-01-09", "valor": 3734.67}, {"fecha": "2026-01-10", "valor": 3717.09}, {"fecha": "2026-01-14", "valor": 3663.24}, {"fecha": "2026-01-15", "valor": 3655.16}, {"fecha": "2026-01-16", "valor": 3687.32}, {"fecha": "2026-01-17", "valor": 3700.05}, {"fecha": "2026-01-21", "valor": 3682.97}, {"fecha": "2026-01-22", "valor": 3669.15}, {"fecha": "2026-01-23", "valor": 3630.33}, {"fecha": "2026-01-24", "valor": 3637.88}, {"fecha": "2026-01-27", "valor": 3676.02}, {"fecha": "2026-01-28", "valor": 3678.59}, {"fecha": "2026-01-29", "valor": 3665.97}, {"fecha": "2026-01-30", "valor": 3661.29}, {"fecha": "2026-01-31", "valor": 3670.47}, {"fecha": "2026-02-03", "valor": 3628.16}, {"fecha": "2026-02-04", "valor": 3622.0}, {"fecha": "2026-02-05", "valor": 3644.93}, {"fecha": "2026-02-06", "valor": 3691.75}, {"fecha": "2026-02-07", "valor": 3670.2}, {"fecha": "2026-02-10", "valor": 3651.9}, {"fecha": "2026-02-11", "valor": 3659.71}, {"fecha": "2026-02-12", "valor": 3671.01}, {"fecha": "2026-02-13", "valor": 3665.78}, {"fecha": "2026-02-14", "valor": 3652.89}, {"fecha": "2026-02-18", "valor": 3664.26}, {"fecha": "2026-02-19", "valor": 3669.21}, {"fecha": "2026-02-20", "valor": 3695.72}, {"fecha": "2026-02-21", "valor": 3691.34}, {"fecha": "2026-02-24", "valor": 3697.36}, {"fecha": "2026-02-25", "valor": 3703.28}, {"fecha": "2026-02-26", "valor": 3703.69}, {"fecha": "2026-02-27", "valor": 3745.78}, {"fecha": "2026-02-28", "valor": 3766.3}, {"fecha": "2026-03-03", "valor": 3768.73}, {"fecha": "2026-03-04", "valor": 3797.64}, {"fecha": "2026-03-05", "valor": 3751.41}, {"fecha": "2026-03-06", "valor": 3767.94}, {"fecha": "2026-03-07", "valor": 3795.55}, {"fecha": "2026-03-10", "valor": 3744.84}, {"fecha": "2026-03-11", "valor": 3710.5}, {"fecha": "2026-03-12", "valor": 3687.87}, {"fecha": "2026-03-13", "valor": 3700.46}, {"fecha": "2026-03-14", "valor": 3685.53}, {"fecha": "2026-03-17", "valor": 3691.9}, {"fecha": "2026-03-18", "valor": 3689.97}, {"fecha": "2026-03-19", "valor": 3704.17}, {"fecha": "2026-03-20", "valor": 3692.48}, {"fecha": "2026-03-21", "valor": 3704.87}, {"fecha": "2026-03-25", "valor": 3700.67}, {"fecha": "2026-03-26", "valor": 3688.46}, {"fecha": "2026-03-27", "valor": 3675.29}, {"fecha": "2026-03-28", "valor": 3668.89}, {"fecha": "2026-03-31", "valor": 3669.96}, {"fecha": "2026-04-01", "valor": 3660.1}, {"fecha": "2026-04-02", "valor": 3675.81}, {"fecha": "2026-04-07", "valor": 3664.41}, {"fecha": "2026-04-08", "valor": 3678.19}, {"fecha": "2026-04-09", "valor": 3640.63}, {"fecha": "2026-04-10", "valor": 3642.93}, {"fecha": "2026-04-11", "valor": 3631.49}, {"fecha": "2026-04-14", "valor": 3608.1}, {"fecha": "2026-04-15", "valor": 3578.82}, {"fecha": "2026-04-16", "valor": 3603.19}, {"fecha": "2026-04-17", "valor": 3615.1}, {"fecha": "2026-04-18", "valor": 3593.14}, {"fecha": "2026-04-21", "valor": 3573.3}, {"fecha": "2026-04-22", "valor": 3576.05}, {"fecha": "2026-04-23", "valor": 3568.88}, {"fecha": "2026-04-24", "valor": 3560.62}, {"fecha": "2026-04-25", "valor": 3551.17}, {"fecha": "2026-04-28", "valor": 3593.17}, {"fecha": "2026-04-29", "valor": 3633.76}, {"fecha": "2026-04-30", "valor": 3621.86}, {"fecha": "2026-05-01", "valor": 3637.51}, {"fecha": "2026-05-05", "valor": 3707.58}, {"fecha": "2026-05-06", "valor": 3723.33}, {"fecha": "2026-05-07", "valor": 3706.44}, {"fecha": "2026-05-08", "valor": 3729.27}, {"fecha": "2026-05-09", "valor": 3747.1}, {"fecha": "2026-05-12", "valor": 3759.0}, {"fecha": "2026-05-13", "valor": 3775.07}, {"fecha": "2026-05-14", "valor": 3794.91}, {"fecha": "2026-05-15", "valor": 3784.7}, {"fecha": "2026-05-16", "valor": 3796.78}, {"fecha": "2026-05-20", "valor": 3796.87}, {"fecha": "2026-05-21", "valor": 3730.49}, {"fecha": "2026-05-22", "valor": 3701.37}, {"fecha": "2026-05-23", "valor": 3667.06}, {"fecha": "2026-05-27", "valor": 3644.47}, {"fecha": "2026-05-28", "valor": 3631.57}, {"fecha": "2026-05-29", "valor": 3646.58}, {"fecha": "2026-05-30", "valor": 3678.15}, {"fecha": "2026-06-02", "valor": 3560.24}, {"fecha": "2026-06-03", "valor": 3562.0}, {"fecha": "2026-06-04", "valor": 3572.85}, {"fecha": "2026-06-05", "valor": 3565.32}, {"fecha": "2026-06-06", "valor": 3588.09}];
-const actual=trmData[trmData.length-1].valor;
-
-document.getElementById('actual').innerText='$'+actual.toLocaleString('es-CO',{minimumFractionDigits:2});
-document.getElementById('max').innerText='$'+Math.max(...trmData.map(x=>x.valor)).toLocaleString('es-CO');
-document.getElementById('min').innerText='$'+Math.min(...trmData.map(x=>x.valor)).toLocaleString('es-CO');
-document.getElementById('anual').innerText=(((actual-trmData[0].valor)/trmData[0].valor)*100).toFixed(2)+'%';
-
-let chart;
-function setRange(days){
- const d=trmData.slice(-days);
- if(chart) chart.destroy();
- chart=new Chart(document.getElementById('chart'),{
-  type:'line',
-  data:{labels:d.map(x=>x.fecha),datasets:[{label:'TRM',data:d.map(x=>x.valor)}]},
-  options:{responsive:true}
- });
-}
-
-function usdToCop(){
- let usd=parseFloat(document.getElementById('usd').value||0);
- document.getElementById('usdResult').innerText='$'+(usd*actual).toLocaleString('es-CO',{maximumFractionDigits:0});
-}
-
-function copToUsd(){
- let cop=parseFloat(document.getElementById('cop').value||0);
- document.getElementById('copResult').innerText=(cop/actual).toFixed(2)+' USD';
-}
-
-setRange(365);
-</script></body></html>
+// ─── DATOS BASE ───────────────────────────────────────────────────────────────
+// Edita este arreglo para agregar datos directamente si prefieres hacerlo manual.
+const BASE_DATA = [{"fecha": "2025-06-06", "valor": 4097.66}, {"fecha": "2025-06-07", "valor": 4138.72}, {"fecha": "2025-06-10", "valor": 4138.53}, {"fecha": "2025-06-11", "valor": 4190.9}, {"fecha": "2025-06-12", "valor": 4190.61}, {"fecha": "2025-06-13", "valor": 4169.13}, {"fecha": "2025-06-14", "valor": 4147.34}, {"fecha": "2025-06-17", "valor": 4096.44}, {"fecha": "2025-06-18", "valor": 4098.83}, {"fecha": "2025-06-19", "valor": 4076.32}, {"fecha": "2025-06-21", "valor": 4080.06}, {"fecha": "2025-06-25", "valor": 4081.15}, {"fecha": "2025-06-26", "valor": 4067.64}, {"fecha": "2025-06-27", "valor": 4042.87}, {"fecha": "2025-06-28", "valor": 4069.67}, {"fecha": "2025-07-02", "valor": 4047.71}, {"fecha": "2025-07-03", "valor": 4006.46}, {"fecha": "2025-07-04", "valor": 3974.37}, {"fecha": "2025-07-08", "valor": 4022.29}, {"fecha": "2025-07-09", "valor": 4054.13}, {"fecha": "2025-07-10", "valor": 4026.09}, {"fecha": "2025-07-11", "valor": 4013.5}, {"fecha": "2025-07-12", "valor": 4003.9}, {"fecha": "2025-07-15", "valor": 4011.79}, {"fecha": "2025-07-16", "valor": 4015.04}, {"fecha": "2025-07-17", "valor": 4031.86}, {"fecha": "2025-07-18", "valor": 4016.44}, {"fecha": "2025-07-19", "valor": 4000.61}, {"fecha": "2025-07-22", "valor": 4026.27}, {"fecha": "2025-07-23", "valor": 4061.36}, {"fecha": "2025-07-24", "valor": 4052.86}, {"fecha": "2025-07-25", "valor": 4063.31}, {"fecha": "2025-07-26", "valor": 4110.48}, {"fecha": "2025-07-29", "valor": 4170.59}, {"fecha": "2025-07-30", "valor": 4154.79}, {"fecha": "2025-07-31", "valor": 4179.69}, {"fecha": "2025-08-01", "valor": 4186.71}, {"fecha": "2025-08-02", "valor": 4129.42}, {"fecha": "2025-08-05", "valor": 4097.38}, {"fecha": "2025-08-06", "valor": 4093.12}, {"fecha": "2025-08-07", "valor": 4049.35}, {"fecha": "2025-08-09", "valor": 4034.74}, {"fecha": "2025-08-12", "valor": 4045.87}, {"fecha": "2025-08-13", "valor": 4017.12}, {"fecha": "2025-08-14", "valor": 4020.64}, {"fecha": "2025-08-15", "valor": 4048.74}, {"fecha": "2025-08-16", "valor": 4019.24}, {"fecha": "2025-08-20", "valor": 4036.42}, {"fecha": "2025-08-21", "valor": 4025.51}, {"fecha": "2025-08-22", "valor": 4034.18}, {"fecha": "2025-08-23", "valor": 4008.7}, {"fecha": "2025-08-26", "valor": 4017.44}, {"fecha": "2025-08-27", "valor": 4044.51}, {"fecha": "2025-08-28", "valor": 4051.97}, {"fecha": "2025-08-29", "valor": 4019.09}, {"fecha": "2025-08-30", "valor": 4018.41}, {"fecha": "2025-09-03", "valor": 4016.94}, {"fecha": "2025-09-04", "valor": 4002.86}, {"fecha": "2025-09-05", "valor": 3991.09}, {"fecha": "2025-09-06", "valor": 3960.94}, {"fecha": "2025-09-09", "valor": 3945.29}, {"fecha": "2025-09-10", "valor": 3919.13}, {"fecha": "2025-09-11", "valor": 3921.58}, {"fecha": "2025-09-12", "valor": 3903.18}, {"fecha": "2025-09-13", "valor": 3906.24}, {"fecha": "2025-09-16", "valor": 3897.57}, {"fecha": "2025-09-17", "valor": 3881.92}, {"fecha": "2025-09-18", "valor": 3880.01}, {"fecha": "2025-09-19", "valor": 3892.45}, {"fecha": "2025-09-20", "valor": 3891.19}, {"fecha": "2025-09-23", "valor": 3852.16}, {"fecha": "2025-09-24", "valor": 3844.47}, {"fecha": "2025-09-25", "valor": 3881.26}, {"fecha": "2025-09-26", "valor": 3898.87}, {"fecha": "2025-09-27", "valor": 3908.12}, {"fecha": "2025-09-30", "valor": 3901.29}, {"fecha": "2025-10-01", "valor": 3923.55}, {"fecha": "2025-10-02", "valor": 3890.0}, {"fecha": "2025-10-03", "valor": 3897.64}, {"fecha": "2025-10-04", "valor": 3874.18}, {"fecha": "2025-10-07", "valor": 3853.19}, {"fecha": "2025-10-08", "valor": 3867.54}, {"fecha": "2025-10-09", "valor": 3879.8}, {"fecha": "2025-10-10", "valor": 3894.99}, {"fecha": "2025-10-11", "valor": 3913.24}, {"fecha": "2025-10-15", "valor": 3933.31}, {"fecha": "2025-10-16", "valor": 3902.16}, {"fecha": "2025-10-17", "valor": 3877.07}, {"fecha": "2025-10-18", "valor": 3808.12}, {"fecha": "2025-10-21", "valor": 3877.26}, {"fecha": "2025-10-22", "valor": 3876.6}, {"fecha": "2025-10-23", "valor": 3900.82}, {"fecha": "2025-10-24", "valor": 3888.76}, {"fecha": "2025-10-25", "valor": 3858.63}, {"fecha": "2025-10-28", "valor": 3844.2}, {"fecha": "2025-10-29", "valor": 3874.84}, {"fecha": "2025-10-30", "valor": 3885.29}, {"fecha": "2025-10-31", "valor": 3870.42}, {"fecha": "2025-11-01", "valor": 3860.12}, {"fecha": "2025-11-05", "valor": 3872.47}, {"fecha": "2025-11-06", "valor": 3839.47}, {"fecha": "2025-11-07", "valor": 3807.06}, {"fecha": "2025-11-08", "valor": 3779.2}, {"fecha": "2025-11-11", "valor": 3760.93}, {"fecha": "2025-11-13", "valor": 3719.71}, {"fecha": "2025-11-14", "valor": 3719.6}, {"fecha": "2025-11-15", "valor": 3764.77}, {"fecha": "2025-11-19", "valor": 3737.55}, {"fecha": "2025-11-20", "valor": 3716.73}, {"fecha": "2025-11-21", "valor": 3741.27}, {"fecha": "2025-11-22", "valor": 3808.77}, {"fecha": "2025-11-25", "valor": 3804.09}, {"fecha": "2025-11-26", "valor": 3806.16}, {"fecha": "2025-11-27", "valor": 3773.6}, {"fecha": "2025-11-29", "valor": 3744.43}, {"fecha": "2025-12-02", "valor": 3784.43}, {"fecha": "2025-12-03", "valor": 3817.66}, {"fecha": "2025-12-04", "valor": 3780.8}, {"fecha": "2025-12-05", "valor": 3757.92}, {"fecha": "2025-12-06", "valor": 3830.02}, {"fecha": "2025-12-10", "valor": 3861.34}, {"fecha": "2025-12-11", "valor": 3854.28}, {"fecha": "2025-12-12", "valor": 3810.99}, {"fecha": "2025-12-13", "valor": 3788.53}, {"fecha": "2025-12-16", "valor": 3817.59}, {"fecha": "2025-12-17", "valor": 3847.1}, {"fecha": "2025-12-18", "valor": 3866.77}, {"fecha": "2025-12-19", "valor": 3874.71}, {"fecha": "2025-12-20", "valor": 3817.93}, {"fecha": "2025-12-23", "valor": 3792.59}, {"fecha": "2025-12-24", "valor": 3759.48}, {"fecha": "2025-12-25", "valor": 3706.94}, {"fecha": "2025-12-27", "valor": 3716.05}, {"fecha": "2025-12-30", "valor": 3706.97}, {"fecha": "2025-12-31", "valor": 3757.08}, {"fecha": "2026-01-03", "valor": 3790.77}, {"fecha": "2026-01-06", "valor": 3770.03}, {"fecha": "2026-01-07", "valor": 3730.26}, {"fecha": "2026-01-08", "valor": 3748.83}, {"fecha": "2026-01-09", "valor": 3734.67}, {"fecha": "2026-01-10", "valor": 3717.09}, {"fecha": "2026-01-14", "valor": 3663.24}, {"fecha": "2026-01-15", "valor": 3655.16}, {"fecha": "2026-01-16", "valor": 3687.32}, {"fecha": "2026-01-17", "valor": 3700.05}, {"fecha": "2026-01-21", "valor": 3682.97}, {"fecha": "2026-01-22", "valor": 3669.15}, {"fecha": "2026-01-23", "valor": 3630.33}, {"fecha": "2026-01-24", "valor": 3637.88}, {"fecha": "2026-01-27", "valor": 3676.02}, {"fecha": "2026-01-28", "valor": 3678.59}, {"fecha": "2026-01-29", "valor": 3665.97}, {"fecha": "2026-01-30", "valor": 3661.29}, {"fecha": "2026-01-31", "valor": 3670.47}, {"fecha": "2026-02-03", "valor": 3628.16}, {"fecha": "2026-02-04", "valor": 3622.0}, {"fecha": "2026-02-05", "valor": 3644.93}, {"fecha": "2026-02-06", "valor": 3691.75}, {"fecha": "2026-02-07", "valor": 3670.2}, {"fecha": "2026-02-10", "valor": 3651.9}, {"fecha": "2026-02-11", "valor": 3659.71}, {"fecha": "2026-02-12", "valor": 3671.01}, {"fecha": "2026-02-13", "valor": 3665.78}, {"fecha": "2026-02-14", "valor": 3652.89}, {"fecha": "2026-02-18", "valor": 3664.26}, {"fecha": "2026-02-19", "valor": 3669.21}, {"fecha": "2026-02-20", "valor": 3695.72}, {"fecha": "2026-02-21", "valor": 3691.34}, {"fecha": "2026-02-24", "valor": 3697.36}, {"fecha": "2026-02-25", "valor": 3703.28}, {"fecha": "2026-02-26", "valor": 3703.69}, {"fecha": "2026-02-27", "valor": 3745.78}, {"fecha": "2026-02-28", "valor": 3766.3}, {"fecha": "2026-03-03", "valor": 3768.73}, {"fecha": "2026-03-04", "valor": 3797.64}, {"fecha": "2026-03-05", "valor": 3751.41}, {"fecha": "2026-03-06", "valor": 3767.94}, {"fecha": "2026-03-07", "valor": 3795.55}, {"fecha": "2026-03-10", "valor": 3744.84}, {"fecha": "2026-03-11", "valor": 3710.5}, {"fecha": "2026-03-12", "valor": 3687.87}, {"fecha": "2026-03-13", "valor": 3700.46}, {"fecha": "2026
