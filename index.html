@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin TRM – El Espectador</title>
@@ -70,6 +69,14 @@ input:focus { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,16,46,0.
   max-height: 180px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
   margin-bottom: 12px; line-height: 1.6;
 }
+textarea.code-block {
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  border: 0;
+  outline: none;
+}
 .actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
 .steps { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
@@ -96,23 +103,48 @@ input:focus { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,16,46,0.
 <div class="topbar">
   <h1>TRM Colombia — Panel de administración</h1>
   <span class="badge-admin">Admin</span>
-  <span style="margin-left:auto;font-size:12px;" id="topFecha"></span>
+  <span style="margin-left:auto;font-size:12px;" id="topFecha">miércoles, 10 de junio de 2026</span>
 </div>
 
 <div class="container">
 
-  <div class="summary" id="summaryGrid"></div>
+  <div class="summary" id="summaryGrid">
+    <div class="metric">
+      <div class="metric-label">TRM más reciente</div>
+      <div class="metric-val" style="color:var(--rojo)">$3.581,48</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Máximo del período</div>
+      <div class="metric-val">$4.190,90</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Mínimo del período</div>
+      <div class="metric-val">$3.551,17</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Total de registros</div>
+      <div class="metric-val">238</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Variación total</div>
+      <div class="metric-val" style="color:var(--verde)">-12.60%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Nuevos (esta sesión)</div>
+      <div class="metric-val" style="color:var(--rojo)">0</div>
+    </div>
+  </div>
 
   <div class="card">
     <p class="card-title">Agregar nueva TRM</p>
     <div class="form-row">
       <div class="form-group">
         <label for="fechaInput">Fecha</label>
-        <input type="date" id="fechaInput" />
+        <input type="date" id="fechaInput">
       </div>
       <div class="form-group">
         <label for="valorInput">Valor en COP</label>
-        <input type="number" id="valorInput" placeholder="ej: 4200.50" step="0.01" />
+        <input type="number" id="valorInput" placeholder="ej: 4200.50" step="0.01">
       </div>
       <button class="btn btn-primary" onclick="agregarTRM()">+ Agregar</button>
     </div>
@@ -121,13 +153,153 @@ input:focus { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,16,46,0.
 
   <div class="card">
     <p class="card-title">Registros recientes (últimos 20)</p>
-    <div class="entry-list" id="entryList"></div>
+    <div class="entry-list" id="entryList"><div class="entry-row">
+      <span class="entry-date">2026-06-10</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.581,48</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-06-06</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.588,09</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-06-05</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.565,32</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-06-04</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.572,85</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-06-03</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.562,00</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-06-02</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.560,24</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-30</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.678,15</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-29</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.646,58</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-28</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.631,57</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-27</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.644,47</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-23</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.667,06</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-22</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.701,37</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-21</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.730,49</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-20</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.796,87</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-16</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.796,78</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-15</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.784,70</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-14</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.794,91</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-13</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.775,07</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-12</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.759,00</span>
+        
+        
+      </span>
+    </div><div class="entry-row">
+      <span class="entry-date">2026-05-09</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">$3.747,10</span>
+        
+        
+      </span>
+    </div></div>
   </div>
 
   <div class="card">
     <p class="card-title">Código actualizado — listo para pegar en GitHub</p>
     <div class="code-wrap">
-      <div class="code-block" id="codeBlock"></div>
+      <textarea class="code-block" id="codeBlock" readonly=""></textarea>
     </div>
     <div class="actions">
       <button class="btn btn-primary" onclick="copiarCodigo()">📋 Copiar código</button>
@@ -136,7 +308,7 @@ input:focus { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,16,46,0.
     <div class="steps">
       <div class="step"><div class="step-num">1</div><span>Copia el código con el botón de arriba.</span></div>
       <div class="step"><div class="step-num">2</div><span>En GitHub, edita <code>index.html</code> (botón "Abrir en GitHub").</span></div>
-      <div class="step"><div class="step-num">3</div><span>Busca <code>const trmData=[</code> y selecciona toda esa línea. Reemplázala con el código copiado.</span></div>
+      <div class="step"><div class="step-num">3</div><span>Selecciona todo el contenido de <code>index.html</code> y reemplázalo con el código copiado.</span></div>
       <div class="step"><div class="step-num">4</div><span>Haz clic en <strong>Commit changes</strong>. El sitio se actualiza en ~30 segundos.</span></div>
     </div>
   </div>
@@ -148,7 +320,1103 @@ input:focus { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(200,16,46,0.
 <script>
 // ─── DATOS BASE ───────────────────────────────────────────────────────────────
 // Edita este arreglo para agregar datos directamente si prefieres hacerlo manual.
-const BASE_DATA = [{"fecha": "2025-06-06", "valor": 4097.66}, {"fecha": "2025-06-07", "valor": 4138.72}, {"fecha": "2025-06-10", "valor": 4138.53}, {"fecha": "2025-06-11", "valor": 4190.9}, {"fecha": "2025-06-12", "valor": 4190.61}, {"fecha": "2025-06-13", "valor": 4169.13}, {"fecha": "2025-06-14", "valor": 4147.34}, {"fecha": "2025-06-17", "valor": 4096.44}, {"fecha": "2025-06-18", "valor": 4098.83}, {"fecha": "2025-06-19", "valor": 4076.32}, {"fecha": "2025-06-21", "valor": 4080.06}, {"fecha": "2025-06-25", "valor": 4081.15}, {"fecha": "2025-06-26", "valor": 4067.64}, {"fecha": "2025-06-27", "valor": 4042.87}, {"fecha": "2025-06-28", "valor": 4069.67}, {"fecha": "2025-07-02", "valor": 4047.71}, {"fecha": "2025-07-03", "valor": 4006.46}, {"fecha": "2025-07-04", "valor": 3974.37}, {"fecha": "2025-07-08", "valor": 4022.29}, {"fecha": "2025-07-09", "valor": 4054.13}, {"fecha": "2025-07-10", "valor": 4026.09}, {"fecha": "2025-07-11", "valor": 4013.5}, {"fecha": "2025-07-12", "valor": 4003.9}, {"fecha": "2025-07-15", "valor": 4011.79}, {"fecha": "2025-07-16", "valor": 4015.04}, {"fecha": "2025-07-17", "valor": 4031.86}, {"fecha": "2025-07-18", "valor": 4016.44}, {"fecha": "2025-07-19", "valor": 4000.61}, {"fecha": "2025-07-22", "valor": 4026.27}, {"fecha": "2025-07-23", "valor": 4061.36}, {"fecha": "2025-07-24", "valor": 4052.86}, {"fecha": "2025-07-25", "valor": 4063.31}, {"fecha": "2025-07-26", "valor": 4110.48}, {"fecha": "2025-07-29", "valor": 4170.59}, {"fecha": "2025-07-30", "valor": 4154.79}, {"fecha": "2025-07-31", "valor": 4179.69}, {"fecha": "2025-08-01", "valor": 4186.71}, {"fecha": "2025-08-02", "valor": 4129.42}, {"fecha": "2025-08-05", "valor": 4097.38}, {"fecha": "2025-08-06", "valor": 4093.12}, {"fecha": "2025-08-07", "valor": 4049.35}, {"fecha": "2025-08-09", "valor": 4034.74}, {"fecha": "2025-08-12", "valor": 4045.87}, {"fecha": "2025-08-13", "valor": 4017.12}, {"fecha": "2025-08-14", "valor": 4020.64}, {"fecha": "2025-08-15", "valor": 4048.74}, {"fecha": "2025-08-16", "valor": 4019.24}, {"fecha": "2025-08-20", "valor": 4036.42}, {"fecha": "2025-08-21", "valor": 4025.51}, {"fecha": "2025-08-22", "valor": 4034.18}, {"fecha": "2025-08-23", "valor": 4008.7}, {"fecha": "2025-08-26", "valor": 4017.44}, {"fecha": "2025-08-27", "valor": 4044.51}, {"fecha": "2025-08-28", "valor": 4051.97}, {"fecha": "2025-08-29", "valor": 4019.09}, {"fecha": "2025-08-30", "valor": 4018.41}, {"fecha": "2025-09-03", "valor": 4016.94}, {"fecha": "2025-09-04", "valor": 4002.86}, {"fecha": "2025-09-05", "valor": 3991.09}, {"fecha": "2025-09-06", "valor": 3960.94}, {"fecha": "2025-09-09", "valor": 3945.29}, {"fecha": "2025-09-10", "valor": 3919.13}, {"fecha": "2025-09-11", "valor": 3921.58}, {"fecha": "2025-09-12", "valor": 3903.18}, {"fecha": "2025-09-13", "valor": 3906.24}, {"fecha": "2025-09-16", "valor": 3897.57}, {"fecha": "2025-09-17", "valor": 3881.92}, {"fecha": "2025-09-18", "valor": 3880.01}, {"fecha": "2025-09-19", "valor": 3892.45}, {"fecha": "2025-09-20", "valor": 3891.19}, {"fecha": "2025-09-23", "valor": 3852.16}, {"fecha": "2025-09-24", "valor": 3844.47}, {"fecha": "2025-09-25", "valor": 3881.26}, {"fecha": "2025-09-26", "valor": 3898.87}, {"fecha": "2025-09-27", "valor": 3908.12}, {"fecha": "2025-09-30", "valor": 3901.29}, {"fecha": "2025-10-01", "valor": 3923.55}, {"fecha": "2025-10-02", "valor": 3890.0}, {"fecha": "2025-10-03", "valor": 3897.64}, {"fecha": "2025-10-04", "valor": 3874.18}, {"fecha": "2025-10-07", "valor": 3853.19}, {"fecha": "2025-10-08", "valor": 3867.54}, {"fecha": "2025-10-09", "valor": 3879.8}, {"fecha": "2025-10-10", "valor": 3894.99}, {"fecha": "2025-10-11", "valor": 3913.24}, {"fecha": "2025-10-15", "valor": 3933.31}, {"fecha": "2025-10-16", "valor": 3902.16}, {"fecha": "2025-10-17", "valor": 3877.07}, {"fecha": "2025-10-18", "valor": 3808.12}, {"fecha": "2025-10-21", "valor": 3877.26}, {"fecha": "2025-10-22", "valor": 3876.6}, {"fecha": "2025-10-23", "valor": 3900.82}, {"fecha": "2025-10-24", "valor": 3888.76}, {"fecha": "2025-10-25", "valor": 3858.63}, {"fecha": "2025-10-28", "valor": 3844.2}, {"fecha": "2025-10-29", "valor": 3874.84}, {"fecha": "2025-10-30", "valor": 3885.29}, {"fecha": "2025-10-31", "valor": 3870.42}, {"fecha": "2025-11-01", "valor": 3860.12}, {"fecha": "2025-11-05", "valor": 3872.47}, {"fecha": "2025-11-06", "valor": 3839.47}, {"fecha": "2025-11-07", "valor": 3807.06}, {"fecha": "2025-11-08", "valor": 3779.2}, {"fecha": "2025-11-11", "valor": 3760.93}, {"fecha": "2025-11-13", "valor": 3719.71}, {"fecha": "2025-11-14", "valor": 3719.6}, {"fecha": "2025-11-15", "valor": 3764.77}, {"fecha": "2025-11-19", "valor": 3737.55}, {"fecha": "2025-11-20", "valor": 3716.73}, {"fecha": "2025-11-21", "valor": 3741.27}, {"fecha": "2025-11-22", "valor": 3808.77}, {"fecha": "2025-11-25", "valor": 3804.09}, {"fecha": "2025-11-26", "valor": 3806.16}, {"fecha": "2025-11-27", "valor": 3773.6}, {"fecha": "2025-11-29", "valor": 3744.43}, {"fecha": "2025-12-02", "valor": 3784.43}, {"fecha": "2025-12-03", "valor": 3817.66}, {"fecha": "2025-12-04", "valor": 3780.8}, {"fecha": "2025-12-05", "valor": 3757.92}, {"fecha": "2025-12-06", "valor": 3830.02}, {"fecha": "2025-12-10", "valor": 3861.34}, {"fecha": "2025-12-11", "valor": 3854.28}, {"fecha": "2025-12-12", "valor": 3810.99}, {"fecha": "2025-12-13", "valor": 3788.53}, {"fecha": "2025-12-16", "valor": 3817.59}, {"fecha": "2025-12-17", "valor": 3847.1}, {"fecha": "2025-12-18", "valor": 3866.77}, {"fecha": "2025-12-19", "valor": 3874.71}, {"fecha": "2025-12-20", "valor": 3817.93}, {"fecha": "2025-12-23", "valor": 3792.59}, {"fecha": "2025-12-24", "valor": 3759.48}, {"fecha": "2025-12-25", "valor": 3706.94}, {"fecha": "2025-12-27", "valor": 3716.05}, {"fecha": "2025-12-30", "valor": 3706.97}, {"fecha": "2025-12-31", "valor": 3757.08}, {"fecha": "2026-01-03", "valor": 3790.77}, {"fecha": "2026-01-06", "valor": 3770.03}, {"fecha": "2026-01-07", "valor": 3730.26}, {"fecha": "2026-01-08", "valor": 3748.83}, {"fecha": "2026-01-09", "valor": 3734.67}, {"fecha": "2026-01-10", "valor": 3717.09}, {"fecha": "2026-01-14", "valor": 3663.24}, {"fecha": "2026-01-15", "valor": 3655.16}, {"fecha": "2026-01-16", "valor": 3687.32}, {"fecha": "2026-01-17", "valor": 3700.05}, {"fecha": "2026-01-21", "valor": 3682.97}, {"fecha": "2026-01-22", "valor": 3669.15}, {"fecha": "2026-01-23", "valor": 3630.33}, {"fecha": "2026-01-24", "valor": 3637.88}, {"fecha": "2026-01-27", "valor": 3676.02}, {"fecha": "2026-01-28", "valor": 3678.59}, {"fecha": "2026-01-29", "valor": 3665.97}, {"fecha": "2026-01-30", "valor": 3661.29}, {"fecha": "2026-01-31", "valor": 3670.47}, {"fecha": "2026-02-03", "valor": 3628.16}, {"fecha": "2026-02-04", "valor": 3622.0}, {"fecha": "2026-02-05", "valor": 3644.93}, {"fecha": "2026-02-06", "valor": 3691.75}, {"fecha": "2026-02-07", "valor": 3670.2}, {"fecha": "2026-02-10", "valor": 3651.9}, {"fecha": "2026-02-11", "valor": 3659.71}, {"fecha": "2026-02-12", "valor": 3671.01}, {"fecha": "2026-02-13", "valor": 3665.78}, {"fecha": "2026-02-14", "valor": 3652.89}, {"fecha": "2026-02-18", "valor": 3664.26}, {"fecha": "2026-02-19", "valor": 3669.21}, {"fecha": "2026-02-20", "valor": 3695.72}, {"fecha": "2026-02-21", "valor": 3691.34}, {"fecha": "2026-02-24", "valor": 3697.36}, {"fecha": "2026-02-25", "valor": 3703.28}, {"fecha": "2026-02-26", "valor": 3703.69}, {"fecha": "2026-02-27", "valor": 3745.78}, {"fecha": "2026-02-28", "valor": 3766.3}, {"fecha": "2026-03-03", "valor": 3768.73}, {"fecha": "2026-03-04", "valor": 3797.64}, {"fecha": "2026-03-05", "valor": 3751.41}, {"fecha": "2026-03-06", "valor": 3767.94}, {"fecha": "2026-03-07", "valor": 3795.55}, {"fecha": "2026-03-10", "valor": 3744.84}, {"fecha": "2026-03-11", "valor": 3710.5}, {"fecha": "2026-03-12", "valor": 3687.87}, {"fecha": "2026-03-13", "valor": 3700.46}, {"fecha": "2026
+const BASE_DATA = [
+  {
+    "fecha": "2025-06-06",
+    "valor": 4097.66
+  },
+  {
+    "fecha": "2025-06-07",
+    "valor": 4138.72
+  },
+  {
+    "fecha": "2025-06-10",
+    "valor": 4138.53
+  },
+  {
+    "fecha": "2025-06-11",
+    "valor": 4190.9
+  },
+  {
+    "fecha": "2025-06-12",
+    "valor": 4190.61
+  },
+  {
+    "fecha": "2025-06-13",
+    "valor": 4169.13
+  },
+  {
+    "fecha": "2025-06-14",
+    "valor": 4147.34
+  },
+  {
+    "fecha": "2025-06-17",
+    "valor": 4096.44
+  },
+  {
+    "fecha": "2025-06-18",
+    "valor": 4098.83
+  },
+  {
+    "fecha": "2025-06-19",
+    "valor": 4076.32
+  },
+  {
+    "fecha": "2025-06-21",
+    "valor": 4080.06
+  },
+  {
+    "fecha": "2025-06-25",
+    "valor": 4081.15
+  },
+  {
+    "fecha": "2025-06-26",
+    "valor": 4067.64
+  },
+  {
+    "fecha": "2025-06-27",
+    "valor": 4042.87
+  },
+  {
+    "fecha": "2025-06-28",
+    "valor": 4069.67
+  },
+  {
+    "fecha": "2025-07-02",
+    "valor": 4047.71
+  },
+  {
+    "fecha": "2025-07-03",
+    "valor": 4006.46
+  },
+  {
+    "fecha": "2025-07-04",
+    "valor": 3974.37
+  },
+  {
+    "fecha": "2025-07-08",
+    "valor": 4022.29
+  },
+  {
+    "fecha": "2025-07-09",
+    "valor": 4054.13
+  },
+  {
+    "fecha": "2025-07-10",
+    "valor": 4026.09
+  },
+  {
+    "fecha": "2025-07-11",
+    "valor": 4013.5
+  },
+  {
+    "fecha": "2025-07-12",
+    "valor": 4003.9
+  },
+  {
+    "fecha": "2025-07-15",
+    "valor": 4011.79
+  },
+  {
+    "fecha": "2025-07-16",
+    "valor": 4015.04
+  },
+  {
+    "fecha": "2025-07-17",
+    "valor": 4031.86
+  },
+  {
+    "fecha": "2025-07-18",
+    "valor": 4016.44
+  },
+  {
+    "fecha": "2025-07-19",
+    "valor": 4000.61
+  },
+  {
+    "fecha": "2025-07-22",
+    "valor": 4026.27
+  },
+  {
+    "fecha": "2025-07-23",
+    "valor": 4061.36
+  },
+  {
+    "fecha": "2025-07-24",
+    "valor": 4052.86
+  },
+  {
+    "fecha": "2025-07-25",
+    "valor": 4063.31
+  },
+  {
+    "fecha": "2025-07-26",
+    "valor": 4110.48
+  },
+  {
+    "fecha": "2025-07-29",
+    "valor": 4170.59
+  },
+  {
+    "fecha": "2025-07-30",
+    "valor": 4154.79
+  },
+  {
+    "fecha": "2025-07-31",
+    "valor": 4179.69
+  },
+  {
+    "fecha": "2025-08-01",
+    "valor": 4186.71
+  },
+  {
+    "fecha": "2025-08-02",
+    "valor": 4129.42
+  },
+  {
+    "fecha": "2025-08-05",
+    "valor": 4097.38
+  },
+  {
+    "fecha": "2025-08-06",
+    "valor": 4093.12
+  },
+  {
+    "fecha": "2025-08-07",
+    "valor": 4049.35
+  },
+  {
+    "fecha": "2025-08-09",
+    "valor": 4034.74
+  },
+  {
+    "fecha": "2025-08-12",
+    "valor": 4045.87
+  },
+  {
+    "fecha": "2025-08-13",
+    "valor": 4017.12
+  },
+  {
+    "fecha": "2025-08-14",
+    "valor": 4020.64
+  },
+  {
+    "fecha": "2025-08-15",
+    "valor": 4048.74
+  },
+  {
+    "fecha": "2025-08-16",
+    "valor": 4019.24
+  },
+  {
+    "fecha": "2025-08-20",
+    "valor": 4036.42
+  },
+  {
+    "fecha": "2025-08-21",
+    "valor": 4025.51
+  },
+  {
+    "fecha": "2025-08-22",
+    "valor": 4034.18
+  },
+  {
+    "fecha": "2025-08-23",
+    "valor": 4008.7
+  },
+  {
+    "fecha": "2025-08-26",
+    "valor": 4017.44
+  },
+  {
+    "fecha": "2025-08-27",
+    "valor": 4044.51
+  },
+  {
+    "fecha": "2025-08-28",
+    "valor": 4051.97
+  },
+  {
+    "fecha": "2025-08-29",
+    "valor": 4019.09
+  },
+  {
+    "fecha": "2025-08-30",
+    "valor": 4018.41
+  },
+  {
+    "fecha": "2025-09-03",
+    "valor": 4016.94
+  },
+  {
+    "fecha": "2025-09-04",
+    "valor": 4002.86
+  },
+  {
+    "fecha": "2025-09-05",
+    "valor": 3991.09
+  },
+  {
+    "fecha": "2025-09-06",
+    "valor": 3960.94
+  },
+  {
+    "fecha": "2025-09-09",
+    "valor": 3945.29
+  },
+  {
+    "fecha": "2025-09-10",
+    "valor": 3919.13
+  },
+  {
+    "fecha": "2025-09-11",
+    "valor": 3921.58
+  },
+  {
+    "fecha": "2025-09-12",
+    "valor": 3903.18
+  },
+  {
+    "fecha": "2025-09-13",
+    "valor": 3906.24
+  },
+  {
+    "fecha": "2025-09-16",
+    "valor": 3897.57
+  },
+  {
+    "fecha": "2025-09-17",
+    "valor": 3881.92
+  },
+  {
+    "fecha": "2025-09-18",
+    "valor": 3880.01
+  },
+  {
+    "fecha": "2025-09-19",
+    "valor": 3892.45
+  },
+  {
+    "fecha": "2025-09-20",
+    "valor": 3891.19
+  },
+  {
+    "fecha": "2025-09-23",
+    "valor": 3852.16
+  },
+  {
+    "fecha": "2025-09-24",
+    "valor": 3844.47
+  },
+  {
+    "fecha": "2025-09-25",
+    "valor": 3881.26
+  },
+  {
+    "fecha": "2025-09-26",
+    "valor": 3898.87
+  },
+  {
+    "fecha": "2025-09-27",
+    "valor": 3908.12
+  },
+  {
+    "fecha": "2025-09-30",
+    "valor": 3901.29
+  },
+  {
+    "fecha": "2025-10-01",
+    "valor": 3923.55
+  },
+  {
+    "fecha": "2025-10-02",
+    "valor": 3890
+  },
+  {
+    "fecha": "2025-10-03",
+    "valor": 3897.64
+  },
+  {
+    "fecha": "2025-10-04",
+    "valor": 3874.18
+  },
+  {
+    "fecha": "2025-10-07",
+    "valor": 3853.19
+  },
+  {
+    "fecha": "2025-10-08",
+    "valor": 3867.54
+  },
+  {
+    "fecha": "2025-10-09",
+    "valor": 3879.8
+  },
+  {
+    "fecha": "2025-10-10",
+    "valor": 3894.99
+  },
+  {
+    "fecha": "2025-10-11",
+    "valor": 3913.24
+  },
+  {
+    "fecha": "2025-10-15",
+    "valor": 3933.31
+  },
+  {
+    "fecha": "2025-10-16",
+    "valor": 3902.16
+  },
+  {
+    "fecha": "2025-10-17",
+    "valor": 3877.07
+  },
+  {
+    "fecha": "2025-10-18",
+    "valor": 3808.12
+  },
+  {
+    "fecha": "2025-10-21",
+    "valor": 3877.26
+  },
+  {
+    "fecha": "2025-10-22",
+    "valor": 3876.6
+  },
+  {
+    "fecha": "2025-10-23",
+    "valor": 3900.82
+  },
+  {
+    "fecha": "2025-10-24",
+    "valor": 3888.76
+  },
+  {
+    "fecha": "2025-10-25",
+    "valor": 3858.63
+  },
+  {
+    "fecha": "2025-10-28",
+    "valor": 3844.2
+  },
+  {
+    "fecha": "2025-10-29",
+    "valor": 3874.84
+  },
+  {
+    "fecha": "2025-10-30",
+    "valor": 3885.29
+  },
+  {
+    "fecha": "2025-10-31",
+    "valor": 3870.42
+  },
+  {
+    "fecha": "2025-11-01",
+    "valor": 3860.12
+  },
+  {
+    "fecha": "2025-11-05",
+    "valor": 3872.47
+  },
+  {
+    "fecha": "2025-11-06",
+    "valor": 3839.47
+  },
+  {
+    "fecha": "2025-11-07",
+    "valor": 3807.06
+  },
+  {
+    "fecha": "2025-11-08",
+    "valor": 3779.2
+  },
+  {
+    "fecha": "2025-11-11",
+    "valor": 3760.93
+  },
+  {
+    "fecha": "2025-11-13",
+    "valor": 3719.71
+  },
+  {
+    "fecha": "2025-11-14",
+    "valor": 3719.6
+  },
+  {
+    "fecha": "2025-11-15",
+    "valor": 3764.77
+  },
+  {
+    "fecha": "2025-11-19",
+    "valor": 3737.55
+  },
+  {
+    "fecha": "2025-11-20",
+    "valor": 3716.73
+  },
+  {
+    "fecha": "2025-11-21",
+    "valor": 3741.27
+  },
+  {
+    "fecha": "2025-11-22",
+    "valor": 3808.77
+  },
+  {
+    "fecha": "2025-11-25",
+    "valor": 3804.09
+  },
+  {
+    "fecha": "2025-11-26",
+    "valor": 3806.16
+  },
+  {
+    "fecha": "2025-11-27",
+    "valor": 3773.6
+  },
+  {
+    "fecha": "2025-11-29",
+    "valor": 3744.43
+  },
+  {
+    "fecha": "2025-12-02",
+    "valor": 3784.43
+  },
+  {
+    "fecha": "2025-12-03",
+    "valor": 3817.66
+  },
+  {
+    "fecha": "2025-12-04",
+    "valor": 3780.8
+  },
+  {
+    "fecha": "2025-12-05",
+    "valor": 3757.92
+  },
+  {
+    "fecha": "2025-12-06",
+    "valor": 3830.02
+  },
+  {
+    "fecha": "2025-12-10",
+    "valor": 3861.34
+  },
+  {
+    "fecha": "2025-12-11",
+    "valor": 3854.28
+  },
+  {
+    "fecha": "2025-12-12",
+    "valor": 3810.99
+  },
+  {
+    "fecha": "2025-12-13",
+    "valor": 3788.53
+  },
+  {
+    "fecha": "2025-12-16",
+    "valor": 3817.59
+  },
+  {
+    "fecha": "2025-12-17",
+    "valor": 3847.1
+  },
+  {
+    "fecha": "2025-12-18",
+    "valor": 3866.77
+  },
+  {
+    "fecha": "2025-12-19",
+    "valor": 3874.71
+  },
+  {
+    "fecha": "2025-12-20",
+    "valor": 3817.93
+  },
+  {
+    "fecha": "2025-12-23",
+    "valor": 3792.59
+  },
+  {
+    "fecha": "2025-12-24",
+    "valor": 3759.48
+  },
+  {
+    "fecha": "2025-12-25",
+    "valor": 3706.94
+  },
+  {
+    "fecha": "2025-12-27",
+    "valor": 3716.05
+  },
+  {
+    "fecha": "2025-12-30",
+    "valor": 3706.97
+  },
+  {
+    "fecha": "2025-12-31",
+    "valor": 3757.08
+  },
+  {
+    "fecha": "2026-01-03",
+    "valor": 3790.77
+  },
+  {
+    "fecha": "2026-01-06",
+    "valor": 3770.03
+  },
+  {
+    "fecha": "2026-01-07",
+    "valor": 3730.26
+  },
+  {
+    "fecha": "2026-01-08",
+    "valor": 3748.83
+  },
+  {
+    "fecha": "2026-01-09",
+    "valor": 3734.67
+  },
+  {
+    "fecha": "2026-01-10",
+    "valor": 3717.09
+  },
+  {
+    "fecha": "2026-01-14",
+    "valor": 3663.24
+  },
+  {
+    "fecha": "2026-01-15",
+    "valor": 3655.16
+  },
+  {
+    "fecha": "2026-01-16",
+    "valor": 3687.32
+  },
+  {
+    "fecha": "2026-01-17",
+    "valor": 3700.05
+  },
+  {
+    "fecha": "2026-01-21",
+    "valor": 3682.97
+  },
+  {
+    "fecha": "2026-01-22",
+    "valor": 3669.15
+  },
+  {
+    "fecha": "2026-01-23",
+    "valor": 3630.33
+  },
+  {
+    "fecha": "2026-01-24",
+    "valor": 3637.88
+  },
+  {
+    "fecha": "2026-01-27",
+    "valor": 3676.02
+  },
+  {
+    "fecha": "2026-01-28",
+    "valor": 3678.59
+  },
+  {
+    "fecha": "2026-01-29",
+    "valor": 3665.97
+  },
+  {
+    "fecha": "2026-01-30",
+    "valor": 3661.29
+  },
+  {
+    "fecha": "2026-01-31",
+    "valor": 3670.47
+  },
+  {
+    "fecha": "2026-02-03",
+    "valor": 3628.16
+  },
+  {
+    "fecha": "2026-02-04",
+    "valor": 3622
+  },
+  {
+    "fecha": "2026-02-05",
+    "valor": 3644.93
+  },
+  {
+    "fecha": "2026-02-06",
+    "valor": 3691.75
+  },
+  {
+    "fecha": "2026-02-07",
+    "valor": 3670.2
+  },
+  {
+    "fecha": "2026-02-10",
+    "valor": 3651.9
+  },
+  {
+    "fecha": "2026-02-11",
+    "valor": 3659.71
+  },
+  {
+    "fecha": "2026-02-12",
+    "valor": 3671.01
+  },
+  {
+    "fecha": "2026-02-13",
+    "valor": 3665.78
+  },
+  {
+    "fecha": "2026-02-14",
+    "valor": 3652.89
+  },
+  {
+    "fecha": "2026-02-18",
+    "valor": 3664.26
+  },
+  {
+    "fecha": "2026-02-19",
+    "valor": 3669.21
+  },
+  {
+    "fecha": "2026-02-20",
+    "valor": 3695.72
+  },
+  {
+    "fecha": "2026-02-21",
+    "valor": 3691.34
+  },
+  {
+    "fecha": "2026-02-24",
+    "valor": 3697.36
+  },
+  {
+    "fecha": "2026-02-25",
+    "valor": 3703.28
+  },
+  {
+    "fecha": "2026-02-26",
+    "valor": 3703.69
+  },
+  {
+    "fecha": "2026-02-27",
+    "valor": 3745.78
+  },
+  {
+    "fecha": "2026-02-28",
+    "valor": 3766.3
+  },
+  {
+    "fecha": "2026-03-03",
+    "valor": 3768.73
+  },
+  {
+    "fecha": "2026-03-04",
+    "valor": 3797.64
+  },
+  {
+    "fecha": "2026-03-05",
+    "valor": 3751.41
+  },
+  {
+    "fecha": "2026-03-06",
+    "valor": 3767.94
+  },
+  {
+    "fecha": "2026-03-07",
+    "valor": 3795.55
+  },
+  {
+    "fecha": "2026-03-10",
+    "valor": 3744.84
+  },
+  {
+    "fecha": "2026-03-11",
+    "valor": 3710.5
+  },
+  {
+    "fecha": "2026-03-12",
+    "valor": 3687.87
+  },
+  {
+    "fecha": "2026-03-13",
+    "valor": 3700.46
+  },
+  {
+    "fecha": "2026-03-14",
+    "valor": 3685.53
+  },
+  {
+    "fecha": "2026-03-17",
+    "valor": 3691.9
+  },
+  {
+    "fecha": "2026-03-18",
+    "valor": 3689.97
+  },
+  {
+    "fecha": "2026-03-19",
+    "valor": 3704.17
+  },
+  {
+    "fecha": "2026-03-20",
+    "valor": 3692.48
+  },
+  {
+    "fecha": "2026-03-21",
+    "valor": 3704.87
+  },
+  {
+    "fecha": "2026-03-25",
+    "valor": 3700.67
+  },
+  {
+    "fecha": "2026-03-26",
+    "valor": 3688.46
+  },
+  {
+    "fecha": "2026-03-27",
+    "valor": 3675.29
+  },
+  {
+    "fecha": "2026-03-28",
+    "valor": 3668.89
+  },
+  {
+    "fecha": "2026-03-31",
+    "valor": 3669.96
+  },
+  {
+    "fecha": "2026-04-01",
+    "valor": 3660.1
+  },
+  {
+    "fecha": "2026-04-02",
+    "valor": 3675.81
+  },
+  {
+    "fecha": "2026-04-07",
+    "valor": 3664.41
+  },
+  {
+    "fecha": "2026-04-08",
+    "valor": 3678.19
+  },
+  {
+    "fecha": "2026-04-09",
+    "valor": 3640.63
+  },
+  {
+    "fecha": "2026-04-10",
+    "valor": 3642.93
+  },
+  {
+    "fecha": "2026-04-11",
+    "valor": 3631.49
+  },
+  {
+    "fecha": "2026-04-14",
+    "valor": 3608.1
+  },
+  {
+    "fecha": "2026-04-15",
+    "valor": 3578.82
+  },
+  {
+    "fecha": "2026-04-16",
+    "valor": 3603.19
+  },
+  {
+    "fecha": "2026-04-17",
+    "valor": 3615.1
+  },
+  {
+    "fecha": "2026-04-18",
+    "valor": 3593.14
+  },
+  {
+    "fecha": "2026-04-21",
+    "valor": 3573.3
+  },
+  {
+    "fecha": "2026-04-22",
+    "valor": 3576.05
+  },
+  {
+    "fecha": "2026-04-23",
+    "valor": 3568.88
+  },
+  {
+    "fecha": "2026-04-24",
+    "valor": 3560.62
+  },
+  {
+    "fecha": "2026-04-25",
+    "valor": 3551.17
+  },
+  {
+    "fecha": "2026-04-28",
+    "valor": 3593.17
+  },
+  {
+    "fecha": "2026-04-29",
+    "valor": 3633.76
+  },
+  {
+    "fecha": "2026-04-30",
+    "valor": 3621.86
+  },
+  {
+    "fecha": "2026-05-01",
+    "valor": 3637.51
+  },
+  {
+    "fecha": "2026-05-05",
+    "valor": 3707.58
+  },
+  {
+    "fecha": "2026-05-06",
+    "valor": 3723.33
+  },
+  {
+    "fecha": "2026-05-07",
+    "valor": 3706.44
+  },
+  {
+    "fecha": "2026-05-08",
+    "valor": 3729.27
+  },
+  {
+    "fecha": "2026-05-09",
+    "valor": 3747.1
+  },
+  {
+    "fecha": "2026-05-12",
+    "valor": 3759
+  },
+  {
+    "fecha": "2026-05-13",
+    "valor": 3775.07
+  },
+  {
+    "fecha": "2026-05-14",
+    "valor": 3794.91
+  },
+  {
+    "fecha": "2026-05-15",
+    "valor": 3784.7
+  },
+  {
+    "fecha": "2026-05-16",
+    "valor": 3796.78
+  },
+  {
+    "fecha": "2026-05-20",
+    "valor": 3796.87
+  },
+  {
+    "fecha": "2026-05-21",
+    "valor": 3730.49
+  },
+  {
+    "fecha": "2026-05-22",
+    "valor": 3701.37
+  },
+  {
+    "fecha": "2026-05-23",
+    "valor": 3667.06
+  },
+  {
+    "fecha": "2026-05-27",
+    "valor": 3644.47
+  },
+  {
+    "fecha": "2026-05-28",
+    "valor": 3631.57
+  },
+  {
+    "fecha": "2026-05-29",
+    "valor": 3646.58
+  },
+  {
+    "fecha": "2026-05-30",
+    "valor": 3678.15
+  },
+  {
+    "fecha": "2026-06-02",
+    "valor": 3560.24
+  },
+  {
+    "fecha": "2026-06-03",
+    "valor": 3562
+  },
+  {
+    "fecha": "2026-06-04",
+    "valor": 3572.85
+  },
+  {
+    "fecha": "2026-06-05",
+    "valor": 3565.32
+  },
+  {
+    "fecha": "2026-06-06",
+    "valor": 3588.09
+  },
+  {
+    "fecha": "2026-06-10",
+    "valor": 3581.48
+  }
+];
 
+// ─── ESTADO ───────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'admin_trm_data_v1';
+let trmData = cargarDatosGuardados();
+let newEntries = new Set();
 
+// ─── UTILIDADES ───────────────────────────────────────────────────────────────
+function fmt(v) {
+  return '$' + parseFloat(v).toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2200);
+}
+function showAlert(msg) {
+  const el = document.getElementById('alertMsg');
+  el.textContent = msg;
+  setTimeout(() => el.textContent = '', 3000);
+}
+function cargarDatosGuardados() {
+  const fallback = JSON.parse(JSON.stringify(BASE_DATA));
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return fallback;
+    const parsed = JSON.parse(saved);
+    if (!Array.isArray(parsed)) return fallback;
+    return parsed
+      .filter(x => x && typeof x.fecha === 'string' && Number.isFinite(Number(x.valor)))
+      .map(x => ({ fecha: x.fecha, valor: parseFloat(Number(x.valor).toFixed(2)) }))
+      .sort((a, b) => a.fecha.localeCompare(b.fecha));
+  } catch (err) {
+    return fallback;
+  }
+}
+function guardarDatos() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(trmData));
+}
 
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderSummary() {
+  const vals = trmData.map(x => x.valor);
+  const last = trmData[trmData.length - 1].valor;
+  const first = trmData[0].valor;
+  const varPct = (((last - first) / first) * 100).toFixed(2);
+  const max = Math.max(...vals);
+  const min = Math.min(...vals);
+  const sign = varPct >= 0 ? '+' : '';
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="metric">
+      <div class="metric-label">TRM más reciente</div>
+      <div class="metric-val" style="color:var(--rojo)">${fmt(last)}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Máximo del período</div>
+      <div class="metric-val">${fmt(max)}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Mínimo del período</div>
+      <div class="metric-val">${fmt(min)}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Total de registros</div>
+      <div class="metric-val">${trmData.length}</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Variación total</div>
+      <div class="metric-val" style="color:${parseFloat(varPct) >= 0 ? 'var(--rojo)' : 'var(--verde)'}">${sign}${varPct}%</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Nuevos (esta sesión)</div>
+      <div class="metric-val" style="color:var(--rojo)">${newEntries.size}</div>
+    </div>
+  `;
+}
+
+function renderList() {
+  const recent = [...trmData].reverse().slice(0, 20);
+  document.getElementById('entryList').innerHTML = recent.map(e => {
+    const key = e.fecha + '_' + e.valor;
+    const isNew = newEntries.has(key);
+    return `<div class="entry-row">
+      <span class="entry-date">${e.fecha}</span>
+      <span style="display:flex;align-items:center;gap:6px;">
+        <span class="entry-val">${fmt(e.valor)}</span>
+        ${isNew ? '<span class="badge-new">nuevo</span>' : ''}
+        ${isNew ? `<button class="btn-del" onclick="eliminar('${e.fecha}',${e.valor})" title="Eliminar">×</button>` : ''}
+      </span>
+    </div>`;
+  }).join('');
+}
+
+function renderCode() {
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const updatedData = `const BASE_DATA = ${JSON.stringify(trmData, null, 2)};`;
+  document.getElementById('codeBlock').value = html.replace(/const BASE_DATA = \[[\s\S]*?\];/, updatedData);
+}
+
+function renderAll() { renderSummary(); renderList(); renderCode(); }
+
+// ─── ACCIONES ────────────────────────────────────────────────────────────────
+function agregarTRM() {
+  const fecha = document.getElementById('fechaInput').value;
+  const valorRaw = document.getElementById('valorInput').value;
+  if (!fecha || !valorRaw) { showAlert('Completa la fecha y el valor.'); return; }
+  const valor = parseFloat(parseFloat(valorRaw).toFixed(2));
+  if (isNaN(valor) || valor <= 0) { showAlert('Ingresa un valor numérico válido.'); return; }
+  if (trmData.find(x => x.fecha === fecha)) { showAlert('Ya existe un registro para esa fecha.'); return; }
+  trmData.push({ fecha, valor });
+  trmData.sort((a, b) => a.fecha.localeCompare(b.fecha));
+  newEntries.add(fecha + '_' + valor);
+  guardarDatos();
+  document.getElementById('fechaInput').value = '';
+  document.getElementById('valorInput').value = '';
+  renderAll();
+  showToast('Registro agregado ✓');
+}
+
+function eliminar(fecha, valor) {
+  trmData = trmData.filter(x => !(x.fecha === fecha && x.valor === valor));
+  newEntries.delete(fecha + '_' + valor);
+  guardarDatos();
+  renderAll();
+  showToast('Registro eliminado');
+}
+
+function copiarCodigo() {
+  const el = document.getElementById('codeBlock');
+  const code = el.value;
+  el.focus();
+  el.select();
+  el.setSelectionRange(0, code.length);
+  navigator.clipboard.writeText(code)
+    .then(() => showToast('Código copiado al portapapeles ✓'))
+    .catch(() => {
+      document.execCommand('copy');
+      showToast('Código seleccionado — usa Ctrl+C si no se copió');
+    });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('fechaInput').value = today;
+document.getElementById('topFecha').textContent = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+renderAll();
+</script></body></html>
